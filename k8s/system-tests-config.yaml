@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: library-system-tests-config
+data:
+  spring.datasource.url: "jdbc:postgresql://postgresql-dev/test-data"
+  env.services.library.url: http://library:8080

@@ -1,0 +1,36 @@
+spring:
+  sql:
+    init:
+      mode: never
+  application:
+    name: library-system-tests
+  jackson:
+    serialization:
+      indent_output: true
+    deserialization:
+      fail-on-unknown-properties: true
+  datasource:
+    url: jdbc:postgresql://localhost/testdata
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+      connection-test-query: SELECT 1
+      pool-name: system-tests-db-cp
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        order_inserts: true
+        order_updates: true
+        batch_versioned_data: true
+
+env:
+  services:
+    library:
+      url: http://library:8080

@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: library-system-tests
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 120
+  template:
+    metadata:
+      labels:
+        app: library-system-tests
+        log-format: json
+    spec:
+      restartPolicy: Never
+      activeDeadlineSeconds: 3600
+      volumes:
+        - name: test-results
+          emptyDir: { }
+        - name: allure-test-results
+          emptyDir: { }
+      containers:
+        - name: library-system-tests
+          image: library-system-tests:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: system-tests-config
+          env:
+            - name: SPRING_PROFILES_INCLUDE
+              value: dev,json-logs
+            - name: DTEST
+              value: "-Dtest="
+          volumeMounts:
+            - name: test-results
+              mountPath: /tmp/target/surefire-reports
+            - name: allure-test-results
+              mountPath: /tmp/target/allure-results
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2000Mi
+        - name: library-system-tests-results
+          image: alpine
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: test-results
+              mountPath: /surefire-test-reports
+            - name: allure-test-results
+              mountPath: /allure-test-results
+          workingDir: /surefire-test-reports
+          command: [ /bin/sh, -c ]
+          args:
+            - |
+              touch /tmp/wait_for_download
+              while [ -f "/tmp/wait_for_download" ]; do echo "Waiting with results" && ls -al /surefire-test-reports && sleep 5s; done
+              echo "Exiting"
+          resources:
+            limits:
+              cpu: "5m"
+              memory: "64Mi"
