@@ -18,6 +18,16 @@ public class EnvironmentConfig {
      */
     private Map<String, ServiceConfig> services = new HashMap<>();
 
+    /**
+     * Trace URL template in the Jaeger UI with {traceId} used as placeholder.
+     */
+    private String jaegerTraceUrlTemplate;
+
+    /**
+     * Trace URL template in the Kibana with {traceId} used as placeholder.
+     */
+    private String kibanaTraceUrlTemplate;
+
     @Valid
     @Data
     public static class ServiceConfig {

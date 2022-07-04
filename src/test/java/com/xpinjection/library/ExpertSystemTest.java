@@ -1,7 +1,5 @@
 package com.xpinjection.library;
 
-import brave.ScopedSpan;
-import brave.Tracer;
 import com.xpinjection.library.client.dto.BookDto;
 import com.xpinjection.library.data.BookRegistry;
 import io.qameta.allure.*;
@@ -9,7 +7,6 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -29,21 +26,9 @@ class ExpertSystemTest extends AbstractSystemTest {
     @Autowired
     private BookRegistry bookRegistry;
 
-    @Autowired
-    private Tracer tracer;
-
-    private ScopedSpan trace;
-
     @BeforeEach
     void init() {
         RestAssured.baseURI = env.getServices().get("library").getUrl();
-    }
-
-    @AfterEach
-    void cleanup() {
-        if (trace != null) {
-            trace.finish();
-        }
     }
 
     @Test

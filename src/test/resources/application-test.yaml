@@ -7,6 +7,13 @@ spring:
     database:
       replace: none
 
+feign:
+  client:
+    config:
+      default:
+        logger-level: FULL
+
 logging:
   level:
     org.springframework.test.context.cache: DEBUG
+    com.xpinjection.library.client: DEBUG

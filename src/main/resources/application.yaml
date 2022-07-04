@@ -34,3 +34,5 @@ env:
   services:
     library:
       url: http://library:8080
+  jaeger-trace-url-template: https://localhost:16686/trace/{traceId}
+  kibana-trace-url-template: https://localhost:9228/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-7d,to:now))&_a=(columns:!(),filters:!(),index:'filebeat-*',interval:auto,query:(language:kuery,query:'trace.id:{traceId}'),sort:!(!('@timestamp',desc)))
