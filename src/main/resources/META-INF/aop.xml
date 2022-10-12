@@ -1,0 +1,20 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+    <!-- Be verbose about registered aspects, woven joinpoints and Xlint warnings -->
+    <!--<weaver options="-verbose -showWeaveInfo">-->
+    <!-- Be less noisy, suppressing Xlint warnings and info about registered aspects -->
+    <weaver options="-showWeaveInfo -Xlint:ignore">
+
+        <!-- Avoiding AspectJ core dump files 'ajcore.*.txt' by only weaving classes in application-specific packages -->
+        <!--<include within="com.example.aspectj..*"/>-->
+
+        <!-- Avoid AspectJ core dump files 'ajcore.*.txt' for ´Spring Boot 2.5.6-->
+        <exclude within="org.springframework.boot.jdbc.DataSourceBuilder.OraclePoolDataSourceProperties"/>
+
+        <!-- Avoid AspectJ core dump files 'ajcore.*.txt' for ´Spring Boot 2.3.3-->
+        <exclude within="org.springframework.boot.diagnostics.analyzer.ValidationExceptionFailureAnalyzer"/>
+
+    </weaver>
+
+</aspectj>
