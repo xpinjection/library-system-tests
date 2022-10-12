@@ -37,7 +37,7 @@ class ExpertSystemTest extends AbstractSystemTest {
     @Issue("US-1234")
     @Story("Expert could recommend any number of books in free format")
     void booksCouldBeRecommendedByTheExpert() {
-        trace = tracer.startScopedSpan("LB-T159");
+        startTrace("LB-T159");
         var books = findBooksInRegistry("Josh Bloch");
 
         var recommendations = buildRecommendations(books);

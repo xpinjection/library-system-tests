@@ -23,10 +23,14 @@ public abstract class AbstractSystemTest {
     @AfterEach
     void cleanup() {
         if (trace != null) {
-            var traceId = trace.context().traceIdString();
-            Allure.link("Trace in Jaeger", env.getJaegerTraceUrlTemplate().replace("{traceId}", traceId));
-            Allure.link("Trace in Kibana", env.getKibanaTraceUrlTemplate().replace("{traceId}", traceId));
             trace.finish();
         }
+    }
+
+    protected void startTrace(String name) {
+        trace = tracer.startScopedSpan(name);
+        var traceId = trace.context().traceIdString();
+        Allure.link("Trace in Jaeger", env.getJaegerTraceUrlTemplate().replace("{traceId}", traceId));
+        Allure.link("Trace in Kibana", env.getKibanaTraceUrlTemplate().replace("{traceId}", traceId));
     }
 }

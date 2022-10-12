@@ -18,7 +18,9 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
-        <allure.version>2.18.1</allure.version>
+        <allure.version>2.19.0</allure.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
+        <spring.profiles.include></spring.profiles.include>
     </properties>
 
     <dependencies>
@@ -102,6 +104,12 @@
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-plugin-api</artifactId>
+            <version>${allure.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
             <version>${allure.version}</version>
             <scope>test</scope>
@@ -142,15 +150,40 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
                 <configuration>
+                    <argLine>
+                        --add-opens java.base/java.lang=ALL-UNNAMED -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
                     <systemProperties>
+                        <property>
+                            <name>junit.jupiter.extensions.autodetection.enabled</name>
+                            <value>true</value>
+                        </property>
                         <property>
                             <name>allure.results.directory</name>
                             <value>${basedir}/target/allure-results</value>
                         </property>
+                        <property>
+                            <name>spring.profiles.include</name>
+                            <value>${spring.profiles.include}</value>
+                        </property>
+                        <property>
+                            <name>allure.link.tms.pattern</name>
+                            <value>https://testrail-url?/cases/view/{}</value>
+                        </property>
+                        <property>
+                            <name>allure.link.issue.pattern</name>
+                            <value>https://jira-url/{}</value>
+                        </property>
                     </systemProperties>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>io.qameta.allure</groupId>
