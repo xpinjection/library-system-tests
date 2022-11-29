@@ -1,9 +1,11 @@
 package com.xpinjection.library.steps;
 
 import com.xpinjection.library.client.dto.BookDto;
+import com.xpinjection.library.config.EnvironmentConfig;
 import com.xpinjection.library.restassured.RestAssuredTracingFilter;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
@@ -22,10 +24,12 @@ import static io.restassured.RestAssured.given;
 @RequiredArgsConstructor
 public class ExpertSteps {
     private final Tracer tracer;
+    private final EnvironmentConfig env;
 
     @Step("Create expert with recommendations")
     @NewSpan("add-expert")
     public int createExpert(String recommendations) {
+        RestAssured.baseURI = env.getServices().get("library").getUrl();
         LOG.info("Create an expert with recommendations: {}", recommendations);
         return given()
                 //.filter(new OpenApiValidationFilter(RestAssured.baseURI + "/v1/library-api.yaml"))

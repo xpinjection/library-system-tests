@@ -3,9 +3,7 @@ package com.xpinjection.library;
 import com.xpinjection.library.steps.BookSteps;
 import com.xpinjection.library.steps.ExpertSteps;
 import io.qameta.allure.*;
-import io.restassured.RestAssured;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +18,6 @@ class ExpertSystemTest extends AbstractSystemTest {
     private BookSteps bookSteps;
     @Autowired
     private ExpertSteps expertSteps;
-
-    @BeforeEach
-    void init() {
-        RestAssured.baseURI = env.getServices().get("library").getUrl();
-    }
 
     @Test
     @Tag("library")
